@@ -57,11 +57,6 @@ int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness,
             if (getFitness(fittestChild, fitness, p) > getFitness(currPoint, fitness, p)) {
                 currPoint = fittestChild;
             }
-            else if (getFitness(fittestChild, fitness, p) == getFitness(currPoint, fitness, p)) { // break ties with coinflip
-                if (rand()%2) {
-                    currPoint = fittestChild;
-                }
-            }
         } else {
             currPoint = fittestChild;
         }
