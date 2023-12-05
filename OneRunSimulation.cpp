@@ -18,6 +18,12 @@ vector<char> generateChild(vector<char>& par) {
     return child;
 }
 
+bool isEqual(vector<char> &v1, vector<char> &v2) {
+    for (int i = 0; i < v1.size(); i++) {
+        if(v1[i] != v2[i]) return false;
+    }
+    return true;
+}
 
 long double getFitness(vector<char> &point, map<vector<char>, long double> &fitness, long double p) {
     if (fitness.count(point)==0) {
@@ -42,7 +48,6 @@ long double getFitness(vector<char> &point, map<vector<char>, long double> &fitn
 int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness, long double p, int64_t cutoff, int64_t lambda, long double k, bool isElitary) {
     int64_t genCounter = 1;
     while (getFitness(currPoint, fitness, p) < (int64_t)currPoint.size()-k && genCounter < cutoff) {
-
         genCounter++;
         vector<char> fittestChild = generateChild(currPoint);
 
@@ -59,8 +64,11 @@ int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness,
                 cout << genCounter << " " << count(currPoint.begin(), currPoint.end(), 1) << " " << (getFitness(currPoint, fitness, p)-count(currPoint.begin(), currPoint.end(), 1)) << "\n";
             }
         } else {
+            if (!isEqual(currPoint, fittestChild)) {
+                cout << genCounter << " " << count(fittestChild.begin(), fittestChild.end(), 1) << " " << (getFitness(fittestChild, fitness, p)-count(fittestChild.begin(), fittestChild.end(), 1)) << "\n";
+            }
             currPoint = fittestChild;
-            cout << genCounter << " " << count(currPoint.begin(), currPoint.end(), 1) << " " << (getFitness(currPoint, fitness, p)-count(currPoint.begin(), currPoint.end(), 1)) << "\n";
+
 
         }
     }
@@ -85,7 +93,7 @@ int main()
     cout << n-k << endl;
     map<vector<char>,long double> fitness;
     vector<char> initSearchPoint(n, 0);
-    simulate(initSearchPoint, fitness, p, cutoff, lambda, k, true);
+    simulate(initSearchPoint, fitness, p, cutoff, lambda, k, false);
 
     return 0;
 }
