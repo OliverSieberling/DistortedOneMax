@@ -27,9 +27,15 @@ long double getFitness(vector<char> &point, map<vector<char>, long double> &fitn
         if (dis(gen)) { // distorted point
             random_device rd2;
             mt19937 gen2(rd2());
-            //exponential_distribution<double> dist2(0.4);
-            uniform_int_distribution<> dist2(1, distortionCutoff);
-            double distortion = min((double)distortionCutoff, (double)dist2(gen2));
+            uniform_real_distribution<> dist2(0, distortionCutoff);
+            double distortion = dist2(gen2);
+            /*
+            exponential_distribution<double> dist2(0.4);
+            double distortion = dist2(gen2);
+            while (distortion > distortionCutoff) { // condition on sampling <= distortionCutoff
+                distortion = dist2(gen2);
+            }
+            */
             //cout << distortion << endl;
             fitness[point] = count(point.begin(), point.end(), 1) + distortion;
         } else { // not distorted point
