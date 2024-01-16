@@ -89,23 +89,21 @@ int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness,
         }
     }
     return genCounter;
-
 }
 
 int main()
 {
-    string filename = "simulate_exp04_iter=" + to_string(numIter) + "_from=" + to_string(from) + "_to=" + to_string(to) + "_steps=" +to_string(stepSize)+ "_cutoff=" +to_string(cutoff) + ".txt";
-    ofstream outFile(filename);
-    streambuf* coutBuffer = cout.rdbuf();
-    cout.rdbuf(outFile.rdbuf());
-
-    int64_t n= 100;
+    int64_t n = 100;
     long double p = 0.3/(sqrt(n));
     long double k = pow(n, 0.15);
     int64_t lambda = round((exp(1)/(exp(1)-1)) * log(n));
     int64_t cutoff = 1'000'000;
-    cout << n-k << endl;
-    map<vector<char>,long double> fitness;
+
+    // output to file
+    string filename = "oneRun_exp04_n=" + to_string(n) + "_cutoff=" + to_string(cutoff) + ".txt";
+    ofstream outFile(filename);
+    streambuf* coutBuffer = cout.rdbuf();
+    cout.rdbuf(outFile.rdbuf());
 
     // choose initial search point uniformly at random
     random_device rd;
@@ -116,6 +114,8 @@ int main()
         initSearchPoint[i] = dis(gen);
     }
 
+    map<vector<char>,long double> fitness;
+    cout << "target: " << n-k << endl;
     simulate(initSearchPoint, fitness, p, cutoff, lambda, k, true);
 
     return 0;
