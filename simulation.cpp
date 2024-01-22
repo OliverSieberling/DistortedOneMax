@@ -42,7 +42,7 @@ long double getFitness(vector<char> &point, map<vector<char>, long double> &fitn
     return fitness[point];
 }
 
-// simulates optimizing distorted OneMax on (1+lambda)-EA (isElitary = true) or (1-lambda)-EA (isElitary = false). Outputs whenever a different point is accepted.
+// simulates optimizing distorted OneMax on (1+lambda)-EA (isElitary = true) or (1-lambda)-EA (isElitary = false).
 int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness, long double p, int64_t cutoff, int64_t lambda, long double k, bool isElitary) {
     int64_t genCounter = 1;
     long double currentPointFitness = getFitness(currPoint, fitness, p);
@@ -88,11 +88,11 @@ int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness,
 int main()
 {
     // Compare (1+lambda)-EA and (1,lambda)-EA on DistortedOneMax for
-    int64_t numIter = 3;
+    int64_t numIter = 25;
     int64_t from =  50; // smallest n to benchmark
-    int64_t to = 150; // biggest n to benchmark
+    int64_t to = 200; // biggest n to benchmark
     int64_t stepSize = 10; // step size of n
-    int64_t cutoff = 50'000;
+    int64_t cutoff = 10'000'000;
 
     string filename = "simulate_exp04Rounded_iter=" + to_string(numIter) + "_from=" + to_string(from) + "_to=" + to_string(to) + "_steps=" +to_string(stepSize)+ "_cutoff=" +to_string(cutoff) + ".txt";
     ofstream outFile(filename);
