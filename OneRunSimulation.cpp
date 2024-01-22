@@ -32,7 +32,6 @@ long double getFitness(vector<char> &point, map<vector<char>, long double> &fitn
         bernoulli_distribution dis(p); // distort with probability p
         if (dis(gen)) {
             exponential_distribution<double> dis2(0.4);
-            //uniform_real_distribution<> dis2(0, 5.0);
             double distortion = dis2(gen);
             fitness[point] = count(point.begin(), point.end(), 1) + distortion;
         } else {
@@ -46,6 +45,7 @@ long double getFitness(vector<char> &point, map<vector<char>, long double> &fitn
 int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness, long double p, int64_t cutoff, int64_t lambda, long double k, bool isElitary) {
     int64_t genCounter = 1;
     long double currentPointFitness = getFitness(currPoint, fitness, p);
+    cout  << setw(13) << left << genCounter << setw(13) << left << currentPointFitness - count(currPoint.begin(), currPoint.end(), 1)  << setw(13) << left << currentPointFitness << endl;
     while (currentPointFitness < (int64_t)currPoint.size()-k && genCounter < cutoff) {
         genCounter++;
         long double fittestChildFitness = -1;
@@ -75,14 +75,14 @@ int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness,
         if (isElitary) {
             if (fittestChildFitness >= currentPointFitness) {
                 if (!isEqual(currPoint, fittestChild)) { // do not print if fittestChild is copy of parent
-                    cout  << setw(13) << left << genCounter << setw(13) << left <<  fittestChildDistortion << setw(13) << left << fittestChildFitness << "\n";
+                    cout  << setw(13) << left << genCounter << setw(13) << left <<  fittestChildDistortion << setw(13) << left << fittestChildFitness << endl;
                 }
                 currPoint = fittestChild;
                 currentPointFitness = fittestChildFitness;
             }
         } else {
             if (!isEqual(currPoint, fittestChild)) { // do not print if fittestChild is copy of parent
-                cout  << setw(13) << left << genCounter << setw(13) << left <<  fittestChildDistortion << setw(13) << left << fittestChildFitness << "\n";
+                cout  << setw(13) << left << genCounter << setw(13) << left <<  fittestChildDistortion << setw(13) << left << fittestChildFitness << endl;
             }
             currPoint = fittestChild;
             currentPointFitness = fittestChildFitness;
@@ -104,6 +104,7 @@ int main()
     ofstream outFile(filename);
     streambuf* coutBuffer = cout.rdbuf();
     cout.rdbuf(outFile.rdbuf());
+    
 
     // choose initial search point uniformly at random
     random_device rd;
@@ -116,9 +117,9 @@ int main()
 
     map<vector<char>,long double> fitness;
     cout << "target: " << n-k << endl;
+    simulate(initSearchPoint, fitness, p, cutoff, lambda, k, false);
     simulate(initSearchPoint, fitness, p, cutoff, lambda, k, true);
 
     return 0;
 }
-
 
