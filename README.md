@@ -4,10 +4,7 @@ This repository contains the code for generating figures in the paper
   
 by J. Lengler, L. Schiller and O. Sieberling. 
 
-- simulations.cpp: code used to generate output files
-- po-ea_simulation.cpp: code used to generate output files
-- output_files: contains output files of simulations that are used to generate the figures
-- notebooks: jupyter notebooks used to generate Figure 2 (conference paper)
+- work in progress
 
 # Contact
 Oliver Sieberling - osieberling@ethz.ch
