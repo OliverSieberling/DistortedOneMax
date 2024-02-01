@@ -5,8 +5,8 @@ This repository contains the code for conducting the experiments and generating 
 by J. Lengler, L. Schiller and O. Sieberling. 
 
 # Figure 2
-- output_files: Contains the output of OneRun_1e9.cpp for exponential and uniform distribution.
-- OneRun_1e9.cpp: Simulates one run of $(1+\lambda)$-EA and $(1,\lambda)$-EA on distorted OneMax. The distortions are sampled from a distribution defined in line 34. Outputs how the total fitness, OneMax fitness and distortion evolve for both simulated runs.
+- output_files: Contains the output of OneRun_1e9.cpp in two seperate files for $(1+\lambda)$-EA and $(1,\lambda)$-EA.
+- OneRun_1e9.cpp: Simulates one run of $(1+\lambda)$-EA and $(1,\lambda)$-EA on distorted OneMax with distortions sampled from an exponential distribution. Outputs how the total fitness, OneMax fitness and distortion evolve for both simulated runs.
 - OneRun_1e9.ipynb: Jupyter notebook to generate figure 2 using the files in output_files.
 - OneRun_1e9.pgf: Figure produced by OneRun_1e9.ipynb.
 
