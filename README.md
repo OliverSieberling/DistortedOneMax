@@ -1,6 +1,6 @@
 This repository contains the code for conducting the experiments and generating the figures in the paper 
 
-- [Plus Strategies are Exponentially Slower for Planted Optima of Random Height](https://arxiv.org/abs/1234) (full version)
+- Plus Strategies are Exponentially Slower for Planted Optima of Random Height
   
 by J. Lengler, L. Schiller and O. Sieberling. 
 
