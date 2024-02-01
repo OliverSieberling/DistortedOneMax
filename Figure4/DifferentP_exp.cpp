@@ -31,8 +31,7 @@ long double getFitness(vector<char> &point, map<vector<char>, long double> &fitn
         mt19937 gen(rd());
         bernoulli_distribution dis(p); // distort with probability p
         if (dis(gen)) {
-            //exponential_distribution<double> dis2(0.4);
-            uniform_real_distribution<> dis2(0, 8.0);
+            exponential_distribution<double> dis2(0.4);
             double distortion = dis2(gen);
             fitness[point] = count(point.begin(), point.end(), 1) + distortion;
         } else {
