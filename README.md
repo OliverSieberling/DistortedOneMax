@@ -1,4 +1,5 @@
-This repository contains the code for conducting the experiments and generating the figures in the paper **Plus Strategies are Exponentially Slower for Planted Optima of Random Height**.
+This repository contains the code for conducting the experiments and generating the figures in the paper 
+- **Plus Strategies are Exponentially Slower for Planted Optima of Random Height**.
   
 # Figure 2
 - output_files: Contains the output of OneRun_1e9.cpp in two seperate files for $(1+\lambda)$-EA and $(1,\lambda)$-EA.
