@@ -1,9 +1,5 @@
-This repository contains the code for conducting the experiments and generating the figures in the paper 
-
-- Plus Strategies are Exponentially Slower for Planted Optima of Random Height
+This repository contains the code for conducting the experiments and generating the figures in the paper Plus Strategies are Exponentially Slower for Planted Optima of Random Height.
   
-by J. Lengler, L. Schiller and O. Sieberling. 
-
 # Figure 2
 - output_files: Contains the output of OneRun_1e9.cpp in two seperate files for $(1+\lambda)$-EA and $(1,\lambda)$-EA.
 - OneRun_1e9.cpp: Simulates one run of $(1+\lambda)$-EA and $(1,\lambda)$-EA on distorted OneMax with distortions sampled from an exponential distribution. Outputs how the total fitness, OneMax fitness and distortion evolve for both simulated runs.
