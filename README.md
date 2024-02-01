@@ -17,3 +17,6 @@ This repository contains the code for conducting the experiments and generating 
 - DifferentP_exp.cpp: Simulates multiples runs $(1+\lambda)$-EA on distorted OneMax for different distortion probabilities $p$. The distortions are sampled from a truncated exponential distribution, where the truncation is defined in line 36. Outputs the number of generations required for each simulated run.
 - DifferentP_exp.ipynb: Jupyter notebook to generate figure 4 using the files in output_files.
 - DifferentP_exp.pgf: Figure produced by DifferentP_exp.ipynb.
+
+# Contact
+Oliver Sieberling - osieberling@ethz.ch
