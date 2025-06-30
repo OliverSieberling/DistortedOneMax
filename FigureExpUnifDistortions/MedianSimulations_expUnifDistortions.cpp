@@ -2,10 +2,8 @@
 using namespace std;
 
 // returns a copy of the parent, where each bit is flipped with probability 1/n
-vector<char> generateChild(vector<char>& par) {
+vector<char> generateChild(vector<char>& par, mt19937& gen) {
     vector<char> child(par);
-    random_device rd;
-    mt19937 gen(rd());
     uniform_int_distribution<> dis(0, par.size());
     for (int64_t i = 0; i < child.size(); i++) {
         if (dis(gen) == 0) {
@@ -23,16 +21,13 @@ bool isEqual(vector<char> &v1, vector<char> &v2) {
     return true;
 }
 
-
 // returns fitness of a point; when called for the first time on this point samples distortion and computes fitness
-long double getFitness(vector<char> &point, map<vector<char>, long double> &fitness, long double p) {
+long double getFitness(vector<char> &point, map<vector<char>, long double> &fitness, long double p, mt19937& gen) {
     if (fitness.count(point)==0) {
-        random_device rd;
-        mt19937 gen(rd());
         bernoulli_distribution dis(p); // distort with probability p
         if (dis(gen)) {
-            exponential_distribution<double> dis2(0.4);
-            //uniform_real_distribution<> dis2(0, 4.0);
+            //exponential_distribution<double> dis2(0.4);
+            uniform_real_distribution<> dis2(0, 4.0);
             double distortion = dis2(gen);
             fitness[point] = count(point.begin(), point.end(), 1) + distortion;
         } else {
@@ -43,17 +38,17 @@ long double getFitness(vector<char> &point, map<vector<char>, long double> &fitn
 }
 
 // simulates optimizing distorted OneMax on (1+lambda)-EA (isElitary = true) or (1-lambda)-EA (isElitary = false).
-int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness, long double p, int64_t cutoff, int64_t lambda, long double k, bool isElitary) {
+int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness, long double p, int64_t cutoff, int64_t lambda, long double k, bool isElitary, mt19937& gen) {
     int64_t genCounter = 1;
-    long double currentPointFitness = getFitness(currPoint, fitness, p);
+    long double currentPointFitness = getFitness(currPoint, fitness, p, gen);
     while (currentPointFitness < (int64_t)currPoint.size()-k && genCounter < cutoff) {
         genCounter++;
         long double fittestChildFitness = -1;
         vector<char> fittestChild;
 
         for (int64_t i = 0; i < lambda; i++) {
-            vector<char> child = generateChild(currPoint);
-            long double childFitness = getFitness(child, fitness, p);
+            vector<char> child = generateChild(currPoint, gen);
+            long double childFitness = getFitness(child, fitness, p, gen);
 
             if (childFitness > fittestChildFitness) { // uniform tie break done by order
                 fittestChildFitness = childFitness;
@@ -76,16 +71,21 @@ int64_t simulate(vector<char> currPoint, map<vector<char>,long double> &fitness,
     return genCounter;
 }
 
+// g++ -O3 -march=native -mtune=native -funroll-loops -flto -ffast-math -DNDEBUG -o prog0 MedianSimulations_expUnifDistortions.cpp
+
 int main()
 {
     // Compare (1+lambda)-EA and (1,lambda)-EA on DistortedOneMax for
     int64_t numIter = 49;
-    int64_t from = 190; // smallest n to benchmark
+    int64_t from = 60; // smallest n to benchmark
     int64_t to = 200; // biggest n to benchmark
     int64_t stepSize = 10; // step size of n
     int64_t cutoff = 1'000'000;
 
-    string filename = "lnn15fixed_simulate_exp04_iter=" + to_string(numIter) + "_from=" + to_string(from) + "_to=" + to_string(to) + "_steps=" +to_string(stepSize)+ "_cutoff=" +to_string(cutoff) + ".txt";
+    random_device rd;
+    mt19937 gen(rd());
+
+    string filename = "lnn15fixed_simulate_unif4_iter=" + to_string(numIter) + "_from=" + to_string(from) + "_to=" + to_string(to) + "_steps=" +to_string(stepSize)+ "_cutoff=" +to_string(cutoff) + ".txt";
     ofstream outFile(filename);
     streambuf* coutBuffer = cout.rdbuf();
     cout.rdbuf(outFile.rdbuf());
@@ -99,8 +99,6 @@ int main()
 
         for (int64_t iter = 0; iter < numIter; iter++) {
             // choose initial search point uniformly at random
-            random_device rd;
-            mt19937 gen(rd());
             uniform_int_distribution<> dis(0, 1);
             vector<char> initSearchPoint(n);
             for (int i = 0; i < n; i++) {
@@ -108,8 +106,8 @@ int main()
             }
 
             map<vector<char>,long double> fitness;
-            plusGenerations.push_back(simulate(initSearchPoint, fitness, p, cutoff, lambda, k, true));
-            commaGenerations.push_back(simulate(initSearchPoint, fitness, p, cutoff, lambda, k, false));
+            plusGenerations.push_back(simulate(initSearchPoint, fitness, p, cutoff, lambda, k, true, gen));
+            commaGenerations.push_back(simulate(initSearchPoint, fitness, p, cutoff, lambda, k, false, gen));
         }
         cout << "n = " << n << endl;
         cout << setw(18) << left << "(1+lambda)-EA:";
